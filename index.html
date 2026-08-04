@@ -1,0 +1,180 @@
+<!doctype html>
+<html lang="es-MX">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="theme-color" content="#44206c" />
+    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2348206c'/%3E%3Cpath d='M8 17h16M16 8v16' stroke='%23c99843' stroke-width='2'/%3E%3C/svg%3E" />
+    <title>Comprobantes · Sector VI</title>
+    <link rel="stylesheet" href="src/comprobantes/styles.css" />
+  </head>
+  <body>
+    <main class="app-shell">
+      <section class="editor-panel" aria-labelledby="form-title">
+        <header class="editor-header">
+          <div class="brand-lockup" aria-label="Sector VI, Privada Huinalá">
+            <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
+            <div>
+              <strong>Sector VI</strong>
+              <small>Privada Huinalá</small>
+            </div>
+          </div>
+          <span class="local-note"><i data-lucide="shield-check"></i> Datos guardados en este equipo</span>
+        </header>
+
+        <div class="editor-intro">
+          <p class="eyebrow">TESORERÍA</p>
+          <h1 id="form-title">Nuevo comprobante</h1>
+          <p>Captura los datos del pago. La vista previa se actualiza en tiempo real.</p>
+        </div>
+
+        <form id="receipt-form" novalidate>
+          <fieldset class="form-section metadata-fields">
+            <legend>Datos de emisión</legend>
+            <label>Folio
+              <span class="field-with-action">
+                <input id="folio" name="folio" type="text" maxlength="30" required />
+                <button class="icon-button" type="button" id="new-folio" aria-label="Generar folio nuevo" title="Generar folio nuevo"><i data-lucide="refresh-cw"></i></button>
+              </span>
+            </label>
+            <label>Fecha de pago
+              <input id="payment-date" name="paymentDate" type="date" required />
+            </label>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Vivienda</legend>
+            <div class="two-columns">
+              <label>Calle
+                <select id="street" name="street" required>
+                  <option value="">Selecciona una calle</option>
+                </select>
+              </label>
+              <label>Núm. de vivienda
+                <select id="house-number" name="houseNumber" required disabled>
+                  <option value="">Selecciona primero la calle</option>
+                </select>
+              </label>
+            </div>
+            <p class="field-help" id="house-help">Padrón integrado: 169 viviendas disponibles.</p>
+          </fieldset>
+
+          <fieldset class="form-section">
+            <legend>Detalle del pago</legend>
+            <div class="two-columns">
+              <label>Concepto
+                <select id="concept" name="concept" required>
+                  <option value="Mensualidad">Mensualidad</option>
+                  <option value="Anualidad">Anualidad</option>
+                  <option value="Compra de tarjeta">Compra de tarjeta</option>
+                  <option value="Adeudo anterior">Adeudo anterior</option>
+                </select>
+              </label>
+              <label>Mes cubierto
+                <input id="covered-period" name="coveredPeriod" type="month" />
+              </label>
+              <label class="conditional-field" id="card-code-wrap" hidden>Código de tarjeta
+                <input id="card-code" name="cardCode" type="text" maxlength="30" placeholder="Ej. TAR-001" />
+              </label>
+              <label class="conditional-field" id="prior-debt-wrap" hidden>Adeudo anterior
+                <input id="prior-debt" name="priorDebt" type="number" min="0" step="0.01" placeholder="$0.00" />
+              </label>
+            </div>
+            <div class="three-columns">
+              <label>Importe recibido
+                <span class="currency-input"><b>$</b><input id="amount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" required /></span>
+              </label>
+              <label>Forma de pago
+                <select id="method" name="method" required>
+                  <option value="Transferencia bancaria">Transferencia bancaria</option>
+                  <option value="Efectivo">Efectivo</option>
+                  <option value="Depósito bancario">Depósito bancario</option>
+                  <option value="Tarjeta">Tarjeta</option>
+                </select>
+              </label>
+              <label>Referencia / folio
+                <input id="reference" name="reference" type="text" maxlength="40" placeholder="Opcional" />
+              </label>
+            </div>
+          </fieldset>
+
+          <div class="form-actions">
+            <button class="secondary-button" id="clear-form" type="button"><i data-lucide="eraser"></i> Limpiar</button>
+            <button class="primary-button" type="submit"><i data-lucide="download"></i> Guardar como PDF</button>
+          </div>
+          <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
+        </form>
+      </section>
+
+      <section class="preview-panel" aria-label="Vista previa de impresión">
+        <header class="preview-toolbar">
+          <span><i data-lucide="eye"></i> Vista previa de impresión</span>
+          <span class="paper-size">Tamaño carta</span>
+        </header>
+
+        <article id="receipt" class="receipt-paper" aria-label="Comprobante de pago">
+          <header class="receipt-header">
+            <div class="receipt-brand">
+              <img class="receipt-logo" src="assets/logo-privalia.png" alt="Privalia Huinalá" />
+            </div>
+            <div class="receipt-title-wrap">
+              <div class="ornament"><span></span><i data-lucide="sparkles"></i><span></span></div>
+              <h2>COMPROBANTE DE PAGO</h2>
+              <p>Sector VI – Privada Huinalá</p>
+              <div class="title-rule"></div>
+            </div>
+          </header>
+
+          <section class="receipt-meta" aria-label="Información de emisión">
+            <div><i data-lucide="file-text"></i><small>FOLIO</small><strong id="preview-folio">SECV1-2026-000154</strong></div>
+            <div><i data-lucide="calendar-days"></i><small>FECHA DE PAGO</small><strong id="preview-payment-date">24 de mayo de 2026</strong></div>
+            <div><i data-lucide="calendar-days"></i><small>FECHA DE EMISIÓN</small><strong id="preview-issued-date">24 de mayo de 2026</strong></div>
+            <div><i data-lucide="clock-3"></i><small>HORA DE EMISIÓN</small><strong id="preview-issued-time">10:35 a.m.</strong></div>
+          </section>
+
+          <section class="receipt-section">
+            <div class="section-heading"><span class="section-icon"><i data-lucide="house"></i></span><h3>DATOS DE LA VIVIENDA</h3><span></span></div>
+            <dl class="receipt-lines">
+              <div><dt>Vivienda</dt><dd id="preview-house">Selecciona una vivienda</dd></div>
+            </dl>
+          </section>
+
+          <section class="payment-highlight" aria-label="Importe recibido">
+            <div class="payment-highlight-icon"><i data-lucide="circle-dollar-sign"></i></div>
+            <div>
+              <small>IMPORTE RECIBIDO</small>
+              <strong id="preview-amount-highlight">$0.00 MXN</strong>
+            </div>
+            <div class="payment-highlight-spark" aria-hidden="true"><span></span><i data-lucide="sparkles"></i><span></span></div>
+          </section>
+
+          <section class="receipt-section payment-section">
+            <div class="section-heading"><span class="section-icon"><i data-lucide="receipt-text"></i></span><h3>DETALLE DEL PAGO</h3><span></span></div>
+            <dl class="receipt-lines">
+              <div><dt>Concepto</dt><dd id="preview-concept">Mensualidad</dd></div>
+              <div id="preview-period-row"><dt>Mes cubierto</dt><dd id="preview-period">—</dd></div>
+              <div id="preview-debt-row" hidden><dt>Adeudo anterior</dt><dd id="preview-debt">—</dd></div>
+              <div id="preview-card-row" hidden><dt>Código de tarjeta</dt><dd id="preview-card">—</dd></div>
+              <div><dt>Importe</dt><dd id="preview-amount" class="amount">$0.00 MXN</dd></div>
+              <div><dt>Forma de pago</dt><dd id="preview-method">Transferencia bancaria</dd></div>
+              <div><dt>Referencia / Folio</dt><dd id="preview-reference">—</dd></div>
+              <div><dt>Responsable de registro</dt><dd>Tesorería Sector VI</dd></div>
+            </dl>
+          </section>
+
+          <aside class="receipt-notice"><i data-lucide="shield-check"></i><span>Conceptos compatibles: Mensualidad, Anualidad, Adquisición de tarjeta u Otro</span></aside>
+
+          <div class="signature-area"><span></span><div><div class="signature-scribble">Tesorería</div><b>Tesorería</b></div><span></span></div>
+
+          <footer class="receipt-footer">
+            <p>Sector VI – Privada Huinalá</p>
+            <small>Este comprobante acredita el pago recibido por el concepto y periodo aquí señalados. Favor de conservarlo para cualquier aclaración con Tesorería.</small>
+          </footer>
+        </article>
+      </section>
+    </main>
+
+    <script src="src/comprobantes/icons.js"></script>
+    <script src="src/comprobantes/app.js"></script>
+  </body>
+</html>

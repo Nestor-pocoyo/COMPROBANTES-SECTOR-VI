@@ -1,0 +1,15 @@
+# Sistema y dependencias locales
+.DS_Store
+Thumbs.db
+node_modules/
+.build/
+
+# Archivos temporales y exportaciones de pruebas
+tmp/
+*.log
+*.tmp
+
+# Configuración privada
+.env
+.env.*
+!.env.example
