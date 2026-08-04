@@ -1,0 +1,12 @@
+SISTEMA DE COMPROBANTES - SECTOR VI
+
+IMPORTANTE
+No abras index.html desde dentro del archivo ZIP.
+
+1. Extrae por completo Sistema-Comprobantes.zip.
+2. En la carpeta extraída, conserva juntos index.html, src y assets.
+3. Abre index.html con Chrome o Edge.
+4. Para el comprobante, llena los datos y pulsa "Guardar como PDF".
+5. En la ventana de impresión, elige "Guardar como PDF".
+
+Para Vercel, sube el contenido completo de la carpeta. No necesita instalación ni comando de compilación.
