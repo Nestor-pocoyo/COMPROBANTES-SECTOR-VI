@@ -1,180 +1,754 @@
 <!doctype html>
 <html lang="es-MX">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <meta name="theme-color" content="#44206c" />
-    <link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 32 32'%3E%3Crect width='32' height='32' rx='8' fill='%2348206c'/%3E%3Cpath d='M8 17h16M16 8v16' stroke='%23c99843' stroke-width='2'/%3E%3C/svg%3E" />
-    <title>Comprobantes · Sector VI</title>
-    <link rel="stylesheet" href="src/comprobantes/styles.css" />
-  </head>
-  <body>
-    <main class="app-shell">
-      <section class="editor-panel" aria-labelledby="form-title">
-        <header class="editor-header">
-          <div class="brand-lockup" aria-label="Sector VI, Privada Huinalá">
-            <div class="brand-mark" aria-hidden="true"><span></span><span></span><span></span><span></span></div>
-            <div>
-              <strong>Sector VI</strong>
-              <small>Privada Huinalá</small>
-            </div>
-          </div>
-          <span class="local-note"><i data-lucide="shield-check"></i> Datos guardados en este equipo</span>
-        </header>
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#48206c">
+<title>Regularización de Adeudos 2026 · Privalia Huinala</title>
+<style>
+:root{
+  --purple:#48206c;
+  --purple-dark:#32134d;
+  --purple-soft:#f2edf6;
+  --gold:#c99a3d;
+  --gold-soft:#fff7e6;
+  --ink:#29242d;
+  --muted:#6e6872;
+  --line:#e6dfe8;
+  --bg:#f7f5f8;
+  --paper:#fff;
+  --green:#17643b;
+  --green-soft:#e9f6ee;
+  --red:#9b2d36;
+  --shadow:0 14px 34px rgba(58,34,70,.09);
+  --radius:18px;
+}
+*{box-sizing:border-box}
+html{scroll-behavior:smooth}
+body{
+  margin:0;
+  min-width:320px;
+  background:var(--bg);
+  color:var(--ink);
+  font-family:"Segoe UI",Arial,sans-serif;
+  line-height:1.45;
+}
+button,select{font:inherit}
+button{cursor:pointer}
+[hidden]{display:none!important}
+.container{width:min(calc(100% - 24px),960px);margin:auto}
 
-        <div class="editor-intro">
-          <p class="eyebrow">TESORERÍA</p>
-          <h1 id="form-title">Nuevo comprobante</h1>
-          <p>Captura los datos del pago. La vista previa se actualiza en tiempo real.</p>
+header{
+  background:linear-gradient(145deg,var(--purple-dark),var(--purple));
+  color:#fff;
+  padding:18px 0 28px;
+}
+.brand{
+  display:flex;align-items:center;gap:11px;
+  padding-bottom:16px;border-bottom:1px solid rgba(255,255,255,.12)
+}
+.logo{
+  width:40px;height:40px;border-radius:11px;background:var(--gold);
+  color:var(--purple-dark);display:grid;place-items:center;
+  font:800 24px Georgia,serif
+}
+.brand strong{display:block;font:700 19px/1 Georgia,serif}
+.brand small{display:block;margin-top:5px;color:#efd8a6;font-size:9px;font-weight:800;letter-spacing:.15em;text-transform:uppercase}
+.hero{padding-top:25px}
+.hero-kicker{margin:0 0 7px;color:#e8c77d;font-size:11px;font-weight:900;letter-spacing:.13em;text-transform:uppercase}
+h1,h2,h3{font-family:Georgia,"Times New Roman",serif}
+h1{margin:0;font-size:clamp(34px,8vw,50px);line-height:1}
+.hero p{margin:11px 0 0;max-width:670px;color:#eee9f1;font-size:14px}
+.hero-note{
+  margin-top:16px;padding:11px 13px;border-radius:11px;
+  background:rgba(255,255,255,.09);border:1px solid rgba(255,255,255,.13);
+  font-size:12px;font-weight:800
+}
+
+main{padding:18px 0 46px}
+.card{
+  background:var(--paper);border:1px solid var(--line);border-radius:var(--radius);
+  box-shadow:var(--shadow);padding:20px;margin-bottom:16px
+}
+.step-label{
+  display:inline-flex;align-items:center;gap:7px;
+  color:var(--purple);font-size:10px;font-weight:900;text-transform:uppercase;letter-spacing:.08em
+}
+.step-number{
+  width:24px;height:24px;border-radius:50%;display:grid;place-items:center;
+  background:var(--purple);color:#fff;font-size:11px
+}
+.card h2{margin:10px 0 5px;color:var(--purple);font-size:26px;line-height:1.05}
+.card-intro{margin:0 0 16px;color:var(--muted);font-size:13px}
+
+.debt-picker{
+  display:grid;grid-template-columns:minmax(0,1fr) auto;gap:10px;align-items:end
+}
+label{display:block;color:var(--purple);font-size:11px;font-weight:900;margin-bottom:7px}
+select{
+  width:100%;min-height:52px;border:1px solid #d8cedd;border-radius:11px;
+  background:#fff;color:var(--ink);padding:0 13px;font-weight:800;outline:none
+}
+select:focus{border-color:var(--gold);box-shadow:0 0 0 3px rgba(201,154,61,.14)}
+.btn{
+  min-height:52px;border:1px solid transparent;border-radius:11px;padding:0 17px;
+  font-weight:900;font-size:13px
+}
+.btn-primary{background:var(--purple);color:#fff}
+.btn-primary:hover{background:var(--purple-dark)}
+.btn-light{background:#fff;color:var(--purple);border-color:#d9cfde}
+.btn-gold{background:var(--gold);color:#2d2134}
+.btn-block{width:100%}
+
+.debt-result{
+  margin-top:14px;padding:15px;border-radius:12px;background:var(--purple-soft);
+  display:flex;align-items:center;justify-content:space-between;gap:14px
+}
+.debt-result span{color:var(--muted);font-size:11px;font-weight:800}
+.debt-result strong{color:var(--purple);font-size:24px}
+
+.current-alert{
+  display:flex;gap:11px;align-items:flex-start;
+  padding:14px;border-radius:13px;background:var(--gold-soft);border:1px solid #efd9aa;
+  margin-bottom:16px
+}
+.alert-icon{
+  width:34px;height:34px;flex:0 0 34px;border-radius:10px;
+  display:grid;place-items:center;background:var(--gold);color:#34243d;font-weight:900
+}
+.current-alert strong{display:block;color:#6e4d11;font-size:13px}
+.current-alert p{margin:3px 0 0;color:#705f3f;font-size:11px}
+
+.mode-title{margin:20px 0 9px;color:var(--purple);font-size:18px}
+.mode-help{margin:-4px 0 12px;color:var(--muted);font-size:11px}
+.options-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:11px}
+.plan-option{
+  position:relative;border:1px solid var(--line);border-radius:15px;background:#fff;padding:16px;
+  transition:border-color .15s,box-shadow .15s,transform .15s
+}
+.plan-option:hover{transform:translateY(-1px);border-color:#cfbdd7}
+.plan-option.recommended{border:2px solid var(--gold)}
+.ribbon{
+  position:absolute;right:10px;top:10px;padding:4px 7px;border-radius:999px;
+  background:var(--gold-soft);color:#75520e;font-size:8px;font-weight:900;text-transform:uppercase
+}
+.plan-option h3{margin:0;color:var(--purple);font-size:20px}
+.discount{margin-top:3px;color:var(--green);font-weight:900;font-size:12px}
+.big-amount{margin:15px 0 2px;color:var(--purple);font-size:27px;font-weight:900;line-height:1}
+.amount-label{color:var(--muted);font-size:9px;font-weight:800;text-transform:uppercase}
+.simple-lines{margin:14px 0;padding:0;list-style:none;display:grid;gap:7px}
+.simple-lines li{display:flex;justify-content:space-between;gap:9px;font-size:11px;padding-bottom:6px;border-bottom:1px dashed #ebe5ed}
+.simple-lines li:last-child{border-bottom:0}
+.simple-lines span{color:var(--muted)}
+.simple-lines b{text-align:right}
+.choose-btn{
+  width:100%;min-height:43px;border-radius:9px;border:1px solid var(--purple);
+  background:#fff;color:var(--purple);font-weight:900;font-size:11px
+}
+.choose-btn:hover,.plan-option.selected .choose-btn{background:var(--purple);color:#fff}
+.plan-option.selected{border:2px solid var(--purple);box-shadow:0 9px 24px rgba(72,32,108,.13)}
+
+.installment-box{
+  display:grid;grid-template-columns:minmax(0,1fr) minmax(210px,.55fr);gap:14px;
+  border:1px solid var(--line);border-radius:15px;padding:17px;background:linear-gradient(135deg,#fbf9fc,#fff)
+}
+.installment-main h3{margin:0;color:var(--purple);font-size:21px}
+.installment-main .discount{margin-bottom:12px}
+.installment-numbers{display:grid;grid-template-columns:repeat(3,1fr);gap:9px}
+.mini-box{padding:10px;border-radius:10px;background:var(--purple-soft)}
+.mini-box small{display:block;color:var(--muted);font-size:8px;font-weight:900;text-transform:uppercase}
+.mini-box strong{display:block;margin-top:3px;color:var(--purple);font-size:16px}
+.payment-selector{
+  padding:13px;border-radius:12px;background:var(--gold-soft);border:1px solid #eed8a7
+}
+.payment-selector label{color:#6c4b0d}
+.monthly-total{margin-top:10px;color:#725215;font-size:10px}
+.monthly-total strong{display:block;margin-top:2px;color:#5c3f0b;font-size:22px}
+.payment-selector .choose-btn{margin-top:11px;border-color:#7f5b18;color:#6b4a10}
+.payment-selector .choose-btn:hover,.payment-selector.selected .choose-btn{background:#75520e;color:#fff}
+
+.chosen{
+  border:2px solid var(--purple);background:linear-gradient(135deg,#fff,#f7f2fa)
+}
+.chosen-top{display:flex;justify-content:space-between;gap:14px;align-items:flex-start}
+.chosen h2{margin-top:8px}
+.chosen-badge{padding:6px 9px;border-radius:999px;background:var(--green-soft);color:var(--green);font-size:9px;font-weight:900;white-space:nowrap}
+.chosen-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:9px;margin-top:14px}
+.chosen-item{padding:12px;border-radius:11px;background:#fff;border:1px solid var(--line)}
+.chosen-item small{display:block;color:var(--muted);font-size:8px;font-weight:900;text-transform:uppercase}
+.chosen-item strong{display:block;margin-top:3px;color:var(--purple);font-size:17px}
+.chosen-current{
+  margin-top:11px;padding:12px;border-radius:11px;background:var(--gold-soft);color:#6b4d16;font-size:11px
+}
+.share-actions{display:grid;grid-template-columns:1fr 1fr;gap:9px;margin-top:13px}
+.share-status{margin:7px 0 0;min-height:15px;color:var(--green);font-size:10px;font-weight:800}
+
+details{
+  background:#fff;border:1px solid var(--line);border-radius:14px;margin-bottom:11px;overflow:hidden
+}
+summary{
+  list-style:none;cursor:pointer;padding:16px 18px;color:var(--purple);font-weight:900;font-size:12px;
+  display:flex;justify-content:space-between;gap:10px;align-items:center
+}
+summary::-webkit-details-marker{display:none}
+summary:after{content:"+";font-size:20px;color:var(--gold);font-weight:400}
+details[open] summary:after{content:"–"}
+.details-body{padding:0 18px 17px;color:var(--muted);font-size:11px}
+.rules-list{margin:0;padding-left:18px;display:grid;gap:8px}
+.rules-list b{color:var(--ink)}
+.compare-list{display:grid;gap:8px}
+.compare-row{
+  display:grid;grid-template-columns:1.5fr repeat(3,1fr);gap:8px;
+  padding:10px;border-radius:10px;background:#faf9fb;border:1px solid #eee9f0;font-size:10px
+}
+.compare-row.header{background:var(--purple);color:#fff;font-weight:900}
+.compare-row b{color:var(--purple)}
+.compare-row.header b{color:#fff}
+
+.bottom-actions{display:flex;gap:9px;margin-top:14px}
+footer{
+  background:#2f173e;color:#fff;text-align:center;padding:23px 0
+}
+footer strong{font:700 17px Georgia,serif}
+footer p{margin:5px 0 0;color:#d9c8e0;font-size:9px}
+
+@media(max-width:760px){
+  .container{width:min(calc(100% - 18px),960px)}
+  header{padding-top:14px}
+  h1{font-size:36px}
+  .hero p{font-size:13px}
+  main{padding-top:12px}
+  .card{padding:16px;border-radius:15px;margin-bottom:12px}
+  .card h2{font-size:24px}
+  .debt-picker{grid-template-columns:1fr}
+  .btn{width:100%}
+  .options-grid{grid-template-columns:1fr}
+  .plan-option{padding:16px}
+  .installment-box{grid-template-columns:1fr}
+  .installment-numbers{grid-template-columns:repeat(3,1fr)}
+  .chosen-grid{grid-template-columns:1fr 1fr}
+  .share-actions{grid-template-columns:1fr}
+  .compare-row{grid-template-columns:1.35fr 1fr 1fr}
+  .compare-row>*:nth-child(4){display:none}
+  .compare-row.header>*:nth-child(4){display:none}
+}
+@media(max-width:420px){
+  .brand strong{font-size:17px}
+  .brand small{font-size:8px}
+  h1{font-size:32px}
+  .hero-note{font-size:11px}
+  .debt-result{align-items:flex-start;flex-direction:column;gap:2px}
+  .debt-result strong{font-size:27px}
+  .installment-numbers{grid-template-columns:1fr 1fr}
+  .chosen-grid{grid-template-columns:1fr}
+  .compare-row{grid-template-columns:1.4fr 1fr}
+  .compare-row>*:nth-child(3){display:none}
+  .compare-row.header>*:nth-child(3){display:none}
+}
+
+@media print{
+  @page{size:A4;margin:12mm}
+  *{-webkit-print-color-adjust:exact;print-color-adjust:exact}
+  body{background:#fff}
+  header{background:#fff!important;color:var(--ink);padding:0 0 12px;border-bottom:2px solid var(--purple)}
+  .brand{border:0;padding:0 0 8px}
+  .brand strong,h1{color:var(--purple)}
+  .brand small,.hero-kicker{color:#775410}
+  .hero{padding-top:8px}
+  .hero p,.hero-note{color:#444}
+  .hero-note{background:#fff;border:1px solid #ddd}
+  main{padding:10px 0}
+  .card,details{box-shadow:none;break-inside:avoid}
+  #stepOne .debt-picker,.bottom-actions,.share-actions,.choose-btn,#printBtn,#clearBtn{display:none!important}
+  #optionsSection{display:block!important}
+  details{display:none}
+  body.has-selection #optionsSection>.current-alert,
+  body.has-selection #optionsSection>.card:not(.chosen),
+  body.has-selection #optionsSection>.bottom-actions{display:none!important}
+  .options-grid{grid-template-columns:repeat(3,1fr)}
+  .installment-box{grid-template-columns:1fr .55fr}
+  footer{background:#fff!important;color:var(--purple);border-top:1px solid var(--gold);padding:10px 0}
+  footer p{color:#555}
+}
+</style>
+</head>
+<body>
+<header>
+  <div class="container">
+    <div class="brand">
+      <div class="logo">P</div>
+      <div>
+        <strong>Privalia Huinala</strong>
+        <small>Regularización de Adeudos 2026</small>
+      </div>
+    </div>
+    <div class="hero">
+      <p class="hero-kicker">Simulador para vecinos</p>
+      <h1>Consulta y elige tu plan.</h1>
+      <p>Selecciona cuántos meses debes y revisa únicamente las opciones que aplican a tu caso.</p>
+      <div class="hero-note">Mensualidad vigente: <b>$340.00</b>. Esta cuota continúa pagándose normalmente y no recibe descuento.</div>
+    </div>
+  </div>
+</header>
+
+<main>
+<div class="container">
+
+  <section class="card" id="stepOne">
+    <span class="step-label"><span class="step-number">1</span> Tu adeudo</span>
+    <h2>¿Cuántas mensualidades debes?</h2>
+    <p class="card-intro">Puedes consultar de 1 a 7 mensualidades vencidas.</p>
+
+    <div class="debt-picker">
+      <div>
+        <label for="monthsSelect">Mensualidades pendientes</label>
+        <select id="monthsSelect">
+          <option value="">Selecciona una opción</option>
+          <option value="1">1 mes</option>
+          <option value="2">2 meses</option>
+          <option value="3">3 meses</option>
+          <option value="4">4 meses</option>
+          <option value="5">5 meses</option>
+          <option value="6">6 meses</option>
+          <option value="7">7 meses</option>
+        </select>
+      </div>
+      <button class="btn btn-primary" id="viewBtn" type="button">Ver mis opciones</button>
+    </div>
+
+    <div class="debt-result" id="debtPreview" hidden>
+      <span id="debtFormula">—</span>
+      <strong id="debtAmount">$0.00</strong>
+    </div>
+  </section>
+
+  <section id="optionsSection" hidden>
+    <div class="current-alert">
+      <div class="alert-icon">!</div>
+      <div>
+        <strong>Importante: los $340 corrientes van aparte.</strong>
+        <p>Los descuentos de abajo se aplican solamente al adeudo vencido.</p>
+      </div>
+    </div>
+
+    <section class="card">
+      <span class="step-label"><span class="step-number">2</span> Tus opciones</span>
+      <h2>Elige cómo quieres regularizarte</h2>
+      <p class="card-intro">Toca “Elegir este plan” en la opción que más te convenga.</p>
+
+      <h3 class="mode-title">Liquidación rápida</h3>
+      <p class="mode-help">Mayor descuento pagando el adeudo en 1, 2 o 3 exhibiciones.</p>
+      <div class="options-grid" id="quickOptions"></div>
+
+      <h3 class="mode-title">Regularización a plazos</h3>
+      <p class="mode-help">Mismo descuento del convenio, pero puedes elegir cuántos pagos usar hasta el máximo permitido.</p>
+      <div class="installment-box" id="installmentBox">
+        <div class="installment-main">
+          <h3 id="installmentTitle">Plan a plazos</h3>
+          <div class="discount" id="installmentDiscount">—</div>
+          <div class="installment-numbers">
+            <div class="mini-box"><small>Deuda original</small><strong id="installmentOriginal">—</strong></div>
+            <div class="mini-box"><small>Saldo con descuento</small><strong id="installmentBalance">—</strong></div>
+            <div class="mini-box"><small>Máximo</small><strong id="installmentMax">—</strong></div>
+          </div>
         </div>
-
-        <form id="receipt-form" novalidate>
-          <fieldset class="form-section metadata-fields">
-            <legend>Datos de emisión</legend>
-            <label>Folio
-              <span class="field-with-action">
-                <input id="folio" name="folio" type="text" maxlength="30" required />
-                <button class="icon-button" type="button" id="new-folio" aria-label="Generar folio nuevo" title="Generar folio nuevo"><i data-lucide="refresh-cw"></i></button>
-              </span>
-            </label>
-            <label>Fecha de pago
-              <input id="payment-date" name="paymentDate" type="date" required />
-            </label>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend>Vivienda</legend>
-            <div class="two-columns">
-              <label>Calle
-                <select id="street" name="street" required>
-                  <option value="">Selecciona una calle</option>
-                </select>
-              </label>
-              <label>Núm. de vivienda
-                <select id="house-number" name="houseNumber" required disabled>
-                  <option value="">Selecciona primero la calle</option>
-                </select>
-              </label>
-            </div>
-            <p class="field-help" id="house-help">Padrón integrado: 169 viviendas disponibles.</p>
-          </fieldset>
-
-          <fieldset class="form-section">
-            <legend>Detalle del pago</legend>
-            <div class="two-columns">
-              <label>Concepto
-                <select id="concept" name="concept" required>
-                  <option value="Mensualidad">Mensualidad</option>
-                  <option value="Anualidad">Anualidad</option>
-                  <option value="Compra de tarjeta">Compra de tarjeta</option>
-                  <option value="Adeudo anterior">Adeudo anterior</option>
-                </select>
-              </label>
-              <label>Mes cubierto
-                <input id="covered-period" name="coveredPeriod" type="month" />
-              </label>
-              <label class="conditional-field" id="card-code-wrap" hidden>Código de tarjeta
-                <input id="card-code" name="cardCode" type="text" maxlength="30" placeholder="Ej. TAR-001" />
-              </label>
-              <label class="conditional-field" id="prior-debt-wrap" hidden>Adeudo anterior
-                <input id="prior-debt" name="priorDebt" type="number" min="0" step="0.01" placeholder="$0.00" />
-              </label>
-            </div>
-            <div class="three-columns">
-              <label>Importe recibido
-                <span class="currency-input"><b>$</b><input id="amount" name="amount" type="number" min="0" step="0.01" inputmode="decimal" required /></span>
-              </label>
-              <label>Forma de pago
-                <select id="method" name="method" required>
-                  <option value="Transferencia bancaria">Transferencia bancaria</option>
-                  <option value="Efectivo">Efectivo</option>
-                  <option value="Depósito bancario">Depósito bancario</option>
-                  <option value="Tarjeta">Tarjeta</option>
-                </select>
-              </label>
-              <label>Referencia / folio
-                <input id="reference" name="reference" type="text" maxlength="40" placeholder="Opcional" />
-              </label>
-            </div>
-          </fieldset>
-
-          <div class="form-actions">
-            <button class="secondary-button" id="clear-form" type="button"><i data-lucide="eraser"></i> Limpiar</button>
-            <button class="primary-button" type="submit"><i data-lucide="download"></i> Guardar como PDF</button>
+        <div class="payment-selector" id="paymentSelectorBox">
+          <label for="installmentPayments">Quiero pagarlo en</label>
+          <select id="installmentPayments"></select>
+          <div class="monthly-total">
+            Pago del convenio: <b id="installmentPerPayment">—</b>
+            <strong id="installmentMonthlyTotal">—</strong>
+            incluyendo los $340 corrientes
           </div>
-          <p class="status-message" id="status-message" role="status" aria-live="polite"></p>
-        </form>
-      </section>
+          <button class="choose-btn" id="chooseInstallmentBtn" type="button">Elegir este plan</button>
+        </div>
+      </div>
+    </section>
 
-      <section class="preview-panel" aria-label="Vista previa de impresión">
-        <header class="preview-toolbar">
-          <span><i data-lucide="eye"></i> Vista previa de impresión</span>
-          <span class="paper-size">Tamaño carta</span>
-        </header>
+    <section class="card chosen" id="chosenSection" hidden>
+      <div class="chosen-top">
+        <div>
+          <span class="step-label"><span class="step-number">3</span> Tu elección</span>
+          <h2 id="chosenTitle">Plan elegido</h2>
+        </div>
+        <span class="chosen-badge">Seleccionado</span>
+      </div>
+      <p class="card-intro" id="chosenSubtitle"></p>
 
-        <article id="receipt" class="receipt-paper" aria-label="Comprobante de pago">
-          <header class="receipt-header">
-            <div class="receipt-brand">
-              <img class="receipt-logo" src="assets/logo-privalia.png" alt="Privalia Huinalá" />
-            </div>
-            <div class="receipt-title-wrap">
-              <div class="ornament"><span></span><i data-lucide="sparkles"></i><span></span></div>
-              <h2>COMPROBANTE DE PAGO</h2>
-              <p>Sector VI – Privada Huinalá</p>
-              <div class="title-rule"></div>
-            </div>
-          </header>
+      <div class="chosen-grid">
+        <div class="chosen-item"><small>Deuda original</small><strong id="chosenOriginal">—</strong></div>
+        <div class="chosen-item"><small>Descuento</small><strong id="chosenDiscount">—</strong></div>
+        <div class="chosen-item"><small>Saldo convenido</small><strong id="chosenBalance">—</strong></div>
+        <div class="chosen-item"><small>Número de pagos</small><strong id="chosenPayments">—</strong></div>
+        <div class="chosen-item"><small>Pago por exhibición</small><strong id="chosenPerPayment">—</strong></div>
+        <div class="chosen-item"><small>Ahorro</small><strong id="chosenSavings">—</strong></div>
+      </div>
 
-          <section class="receipt-meta" aria-label="Información de emisión">
-            <div><i data-lucide="file-text"></i><small>FOLIO</small><strong id="preview-folio">—</strong></div>
-            <div><i data-lucide="calendar-days"></i><small>FECHA DE PAGO</small><strong id="preview-payment-date">—</strong></div>
-            <div><i data-lucide="calendar-days"></i><small>FECHA DE EMISIÓN</small><strong id="preview-issued-date">—</strong></div>
-            <div><i data-lucide="clock-3"></i><small>HORA DE EMISIÓN</small><strong id="preview-issued-time">—</strong></div>
-          </section>
+      <div class="chosen-current" id="chosenCurrent"></div>
 
-          <section class="receipt-section">
-            <div class="section-heading"><span class="section-icon"><i data-lucide="house"></i></span><h3>DATOS DE LA VIVIENDA</h3><span></span></div>
-            <dl class="receipt-lines">
-              <div><dt>Vivienda</dt><dd id="preview-house">Selecciona una vivienda</dd></div>
-            </dl>
-          </section>
+      <div class="share-actions">
+        <button class="btn btn-primary" id="shareBtn" type="button">Compartir mi elección</button>
+        <button class="btn btn-light" id="printBtn" type="button">Imprimir / Guardar PDF</button>
+      </div>
+      <p class="share-status" id="shareStatus"></p>
+    </section>
 
-          <section class="payment-highlight" aria-label="Importe recibido">
-            <div class="payment-highlight-icon"><i data-lucide="circle-dollar-sign"></i></div>
-            <div>
-              <small>IMPORTE RECIBIDO</small>
-              <strong id="preview-amount-highlight">$0.00 MXN</strong>
-            </div>
-            <div class="payment-highlight-spark" aria-hidden="true"><span></span><i data-lucide="sparkles"></i><span></span></div>
-          </section>
+    <details>
+      <summary>Ver comparación completa</summary>
+      <div class="details-body">
+        <div class="compare-list" id="compareList"></div>
+      </div>
+    </details>
 
-          <section class="receipt-section payment-section">
-            <div class="section-heading"><span class="section-icon"><i data-lucide="receipt-text"></i></span><h3>DETALLE DEL PAGO</h3><span></span></div>
-            <dl class="receipt-lines">
-              <div><dt>Concepto</dt><dd id="preview-concept">Mensualidad</dd></div>
-              <div id="preview-period-row"><dt>Mes cubierto</dt><dd id="preview-period">—</dd></div>
-              <div id="preview-debt-row" hidden><dt>Adeudo anterior</dt><dd id="preview-debt">—</dd></div>
-              <div id="preview-card-row" hidden><dt>Código de tarjeta</dt><dd id="preview-card">—</dd></div>
-              <div><dt>Importe</dt><dd id="preview-amount" class="amount">$0.00 MXN</dd></div>
-              <div><dt>Forma de pago</dt><dd id="preview-method">Transferencia bancaria</dd></div>
-              <div><dt>Referencia / Folio</dt><dd id="preview-reference">—</dd></div>
-              <div><dt>Responsable de registro</dt><dd>Tesorería Sector VI</dd></div>
-            </dl>
-          </section>
+    <details>
+      <summary>Ver reglas y condiciones</summary>
+      <div class="details-body">
+        <ul class="rules-list">
+          <li><b>La mensualidad vigente continúa siendo de $340.</b></li>
+          <li>El descuento se aplica únicamente sobre el adeudo vencido.</li>
+          <li>Las nuevas mensualidades deben continuar pagándose normalmente.</li>
+          <li>Los beneficios dependen del cumplimiento del convenio.</li>
+          <li>Si se incumple nuevamente, el beneficio podrá perderse.</li>
+          <li>Los pagos anticipados están permitidos sin penalización.</li>
+          <li>El historial del adeudo original permanecerá registrado en Tesorería.</li>
+          <li>El programa es extraordinario y no constituye un derecho permanente para futuros adeudos.</li>
+        </ul>
+      </div>
+    </details>
 
-          <aside class="receipt-notice"><i data-lucide="shield-check"></i><span>Conceptos compatibles: Mensualidad, Anualidad, Adquisición de tarjeta u Otro</span></aside>
+    <details>
+      <summary>¿Y quienes siempre han pagado?</summary>
+      <div class="details-body">
+        El programa no busca premiar la falta de pago. Busca recuperar cartera vencida y reincorporar vecinos al cumplimiento.
+        Quien está al corriente conserva la ventaja de no tener deuda ni estar sujeto a convenio, y continúa pagando únicamente
+        su mensualidad normal. La administración podrá establecer beneficios o reconocimientos específicos para los vecinos cumplidos.
+      </div>
+    </details>
 
-          <div class="signature-area"><span></span><div><div class="signature-scribble">Tesorería</div><b>Tesorería</b></div><span></span></div>
+    <div class="bottom-actions">
+      <button class="btn btn-light" id="clearBtn" type="button">Hacer otro cálculo</button>
+    </div>
+  </section>
 
-          <footer class="receipt-footer">
-            <p>Sector VI – Privada Huinalá</p>
-            <small>Este comprobante acredita el pago recibido por el concepto y periodo aquí señalados. Favor de conservarlo para cualquier aclaración con Tesorería.</small>
-          </footer>
-        </article>
-      </section>
-    </main>
+</div>
+</main>
 
-    <script src="src/comprobantes/icons.js"></script>
-    <script src="src/comprobantes/app.js"></script>
-  </body>
+<footer>
+  <div class="container">
+    <strong>Privalia Huinala</strong>
+    <p>Programa de Regularización de Adeudos 2026 · Simulador informativo</p>
+  </div>
+</footer>
+
+<script>
+/*
+  CONFIGURACIÓN DEL PROGRAMA
+  Los importes se almacenan en centavos para evitar errores de redondeo.
+*/
+const MONTHLY_FEE_CENTS = 34000;
+const MAX_DEBT_MONTHS = 7;
+
+const QUICK_DISCOUNTS = {
+  1: [{ payments: 1, discount: 0 }],
+  2: [{ payments: 1, discount: 5 }, { payments: 2, discount: 0 }],
+  3: [{ payments: 1, discount: 15 }, { payments: 2, discount: 10 }, { payments: 3, discount: 7.5 }],
+  4: [{ payments: 1, discount: 25 }, { payments: 2, discount: 20 }, { payments: 3, discount: 17.5 }],
+  5: [{ payments: 1, discount: 30 }, { payments: 2, discount: 25 }, { payments: 3, discount: 20 }],
+  6: [{ payments: 1, discount: 30 }, { payments: 2, discount: 25 }, { payments: 3, discount: 22.5 }],
+  7: [{ payments: 1, discount: 30 }, { payments: 2, discount: 27.5 }, { payments: 3, discount: 25 }]
+};
+
+const INSTALLMENT_PLANS = {
+  1: { discount: 0, maxPayments: 2 },
+  2: { discount: 0, maxPayments: 4 },
+  3: { discount: 5, maxPayments: 5 },
+  4: { discount: 15, maxPayments: 5 },
+  5: { discount: 17.5, maxPayments: 6 },
+  6: { discount: 20, maxPayments: 7 },
+  7: { discount: 20, maxPayments: 8 }
+};
+
+const money = new Intl.NumberFormat("es-MX", {
+  style: "currency",
+  currency: "MXN",
+  minimumFractionDigits: 2,
+  maximumFractionDigits: 2
+});
+
+const $ = (id) => document.getElementById(id);
+let currentMonths = 0;
+let selectedPlan = null;
+
+function formatMoney(cents) {
+  return money.format(cents / 100);
+}
+
+function debtCents(months) {
+  return months * MONTHLY_FEE_CENTS;
+}
+
+function discountCents(amount, percent) {
+  return Math.round(amount * percent / 100);
+}
+
+function perPaymentCents(total, payments) {
+  return Math.round(total / payments);
+}
+
+function paymentText(n) {
+  return n === 1 ? "1 pago" : `${n} pagos`;
+}
+
+function quickTitle(n) {
+  return n === 1 ? "En 1 pago" : `En ${n} pagos`;
+}
+
+function buildPlanData(type, payments, discount) {
+  const original = debtCents(currentMonths);
+  const savings = discountCents(original, discount);
+  const balance = original - savings;
+  const perPayment = perPaymentCents(balance, payments);
+  return { type, payments, discount, original, savings, balance, perPayment };
+}
+
+function showDebtPreview() {
+  const months = Number($("monthsSelect").value || 0);
+  if (!months) {
+    $("debtPreview").hidden = true;
+    return;
+  }
+  const amount = debtCents(months);
+  $("debtFormula").textContent = `${months} ${months === 1 ? "mes" : "meses"} × ${formatMoney(MONTHLY_FEE_CENTS)}`;
+  $("debtAmount").textContent = formatMoney(amount);
+  $("debtPreview").hidden = false;
+}
+
+function renderQuickOptions() {
+  const options = QUICK_DISCOUNTS[currentMonths] || [];
+  $("quickOptions").innerHTML = options.map((option, index) => {
+    const data = buildPlanData("quick", option.payments, option.discount);
+    return `
+      <article class="plan-option ${index === 0 ? "recommended" : ""}" data-plan="quick-${option.payments}">
+        ${index === 0 ? '<span class="ribbon">Mayor ahorro</span>' : ""}
+        <h3>${quickTitle(option.payments)}</h3>
+        <div class="discount">${option.discount}% de descuento</div>
+        <div class="big-amount">${formatMoney(data.balance)}</div>
+        <div class="amount-label">Total del adeudo</div>
+        <ul class="simple-lines">
+          <li><span>Ahorras</span><b>${formatMoney(data.savings)}</b></li>
+          <li><span>Pago por exhibición</span><b>${formatMoney(data.perPayment)}</b></li>
+          <li><span>Cuota corriente</span><b>${formatMoney(MONTHLY_FEE_CENTS)} aparte</b></li>
+        </ul>
+        <button class="choose-btn" type="button"
+          data-type="quick"
+          data-payments="${option.payments}"
+          data-discount="${option.discount}">
+          Elegir este plan
+        </button>
+      </article>`;
+  }).join("");
+
+  document.querySelectorAll('[data-type="quick"]').forEach((button) => {
+    button.addEventListener("click", () => {
+      choosePlan(buildPlanData("quick", Number(button.dataset.payments), Number(button.dataset.discount)));
+    });
+  });
+}
+
+function fillInstallmentPayments() {
+  const plan = INSTALLMENT_PLANS[currentMonths];
+  $("installmentPayments").innerHTML = Array.from({ length: plan.maxPayments }, (_, i) => i + 1)
+    .map((n) => `<option value="${n}" ${n === plan.maxPayments ? "selected" : ""}>${paymentText(n)}</option>`)
+    .join("");
+}
+
+function updateInstallmentPreview() {
+  const plan = INSTALLMENT_PLANS[currentMonths];
+  const payments = Number($("installmentPayments").value || plan.maxPayments);
+  const data = buildPlanData("installment", payments, plan.discount);
+
+  $("installmentDiscount").textContent = `${plan.discount}% de descuento`;
+  $("installmentOriginal").textContent = formatMoney(data.original);
+  $("installmentBalance").textContent = formatMoney(data.balance);
+  $("installmentMax").textContent = `Hasta ${plan.maxPayments}`;
+  $("installmentPerPayment").textContent = formatMoney(data.perPayment);
+  $("installmentMonthlyTotal").textContent = formatMoney(data.perPayment + MONTHLY_FEE_CENTS);
+
+  return data;
+}
+
+function renderComparison() {
+  const rows = [];
+  (QUICK_DISCOUNTS[currentMonths] || []).forEach((option, index) => {
+    const d = buildPlanData("quick", option.payments, option.discount);
+    rows.push({
+      name: quickTitle(option.payments),
+      discount: `${option.discount}%`,
+      total: formatMoney(d.balance),
+      payments: paymentText(option.payments)
+    });
+  });
+
+  const plan = INSTALLMENT_PLANS[currentMonths];
+  const installment = buildPlanData("installment", plan.maxPayments, plan.discount);
+  rows.push({
+    name: `A plazos`,
+    discount: `${plan.discount}%`,
+    total: formatMoney(installment.balance),
+    payments: `Hasta ${plan.maxPayments}`
+  });
+
+  $("compareList").innerHTML = `
+    <div class="compare-row header"><span>Opción</span><span>Descuento</span><span>Total</span><span>Pagos</span></div>
+    ${rows.map((r) => `
+      <div class="compare-row">
+        <b>${r.name}</b>
+        <span>${r.discount}</span>
+        <span>${r.total}</span>
+        <span>${r.payments}</span>
+      </div>`).join("")}`;
+}
+
+function renderOptions() {
+  renderQuickOptions();
+  fillInstallmentPayments();
+  updateInstallmentPreview();
+  renderComparison();
+  $("optionsSection").hidden = false;
+  $("chosenSection").hidden = true;
+  selectedPlan = null;
+  document.body.classList.remove("has-selection");
+  clearSelectedStyles();
+}
+
+function clearSelectedStyles() {
+  document.querySelectorAll(".plan-option").forEach((el) => el.classList.remove("selected"));
+  $("paymentSelectorBox").classList.remove("selected");
+}
+
+function choosePlan(data) {
+  selectedPlan = data;
+  document.body.classList.add("has-selection");
+  clearSelectedStyles();
+
+  if (data.type === "quick") {
+    const card = document.querySelector(`[data-plan="quick-${data.payments}"]`);
+    card?.classList.add("selected");
+  } else {
+    $("paymentSelectorBox").classList.add("selected");
+  }
+
+  const title = data.type === "quick"
+    ? `Liquidación rápida · ${quickTitle(data.payments).toLowerCase()}`
+    : `Regularización a plazos · ${paymentText(data.payments)}`;
+
+  $("chosenTitle").textContent = title;
+  $("chosenSubtitle").textContent = data.type === "quick"
+    ? "El descuento corresponde al adeudo vencido. La mensualidad corriente sigue aparte."
+    : "Este cálculo usa el número de pagos que elegiste dentro del máximo permitido.";
+  $("chosenOriginal").textContent = formatMoney(data.original);
+  $("chosenDiscount").textContent = `${data.discount}%`;
+  $("chosenBalance").textContent = formatMoney(data.balance);
+  $("chosenPayments").textContent = paymentText(data.payments);
+  $("chosenPerPayment").textContent = formatMoney(data.perPayment);
+  $("chosenSavings").textContent = formatMoney(data.savings);
+
+  if (data.type === "installment") {
+    $("chosenCurrent").innerHTML =
+      `<b>Durante el convenio:</b> ${formatMoney(data.perPayment)} del convenio + ${formatMoney(MONTHLY_FEE_CENTS)} de mensualidad corriente = <b>${formatMoney(data.perPayment + MONTHLY_FEE_CENTS)} aprox. por mes.</b>`;
+  } else {
+    $("chosenCurrent").innerHTML =
+      `<b>Mensualidad corriente:</b> ${formatMoney(MONTHLY_FEE_CENTS)}. Se paga por separado y no forma parte del descuento.`;
+  }
+
+  $("chosenSection").hidden = false;
+  $("shareStatus").textContent = "";
+  $("chosenSection").scrollIntoView({ behavior: "smooth", block: "start" });
+}
+
+function selectedPlanText() {
+  if (!selectedPlan) return "";
+  const type = selectedPlan.type === "quick"
+    ? `Liquidación rápida en ${paymentText(selectedPlan.payments)}`
+    : `Regularización a plazos en ${paymentText(selectedPlan.payments)}`;
+  const monthly = selectedPlan.type === "installment"
+    ? `\nPago mensual aprox. con cuota corriente: ${formatMoney(selectedPlan.perPayment + MONTHLY_FEE_CENTS)}`
+    : `\nMensualidad corriente: ${formatMoney(MONTHLY_FEE_CENTS)} aparte`;
+
+  return `Privalia Huinala · Regularización 2026
+Adeudo: ${currentMonths} ${currentMonths === 1 ? "mes" : "meses"} (${formatMoney(selectedPlan.original)})
+Plan elegido: ${type}
+Descuento: ${selectedPlan.discount}%
+Saldo convenido: ${formatMoney(selectedPlan.balance)}
+Pago por exhibición: ${formatMoney(selectedPlan.perPayment)}
+Ahorro: ${formatMoney(selectedPlan.savings)}${monthly}`;
+}
+
+async function shareSelection() {
+  if (!selectedPlan) return;
+  const text = selectedPlanText();
+  try {
+    if (navigator.share) {
+      await navigator.share({ title: "Mi plan de regularización", text });
+      $("shareStatus").textContent = "Elección compartida.";
+    } else if (navigator.clipboard) {
+      await navigator.clipboard.writeText(text);
+      $("shareStatus").textContent = "Resumen copiado. Ya puedes pegarlo en WhatsApp.";
+    } else {
+      const area = document.createElement("textarea");
+      area.value = text;
+      document.body.appendChild(area);
+      area.select();
+      document.execCommand("copy");
+      area.remove();
+      $("shareStatus").textContent = "Resumen copiado. Ya puedes pegarlo en WhatsApp.";
+    }
+  } catch (error) {
+    if (error?.name !== "AbortError") {
+      $("shareStatus").textContent = "No se pudo compartir. Puedes guardar el plan como PDF.";
+    }
+  }
+}
+
+function resetAll() {
+  currentMonths = 0;
+  selectedPlan = null;
+  document.body.classList.remove("has-selection");
+  $("monthsSelect").value = "";
+  $("debtPreview").hidden = true;
+  $("optionsSection").hidden = true;
+  $("chosenSection").hidden = true;
+  window.scrollTo({ top: 0, behavior: "smooth" });
+}
+
+$("monthsSelect").addEventListener("change", showDebtPreview);
+
+$("viewBtn").addEventListener("click", () => {
+  const months = Number($("monthsSelect").value || 0);
+  if (!months || months < 1 || months > MAX_DEBT_MONTHS) {
+    $("monthsSelect").focus();
+    return;
+  }
+  currentMonths = months;
+  showDebtPreview();
+  renderOptions();
+  $("optionsSection").scrollIntoView({ behavior: "smooth", block: "start" });
+});
+
+$("installmentPayments").addEventListener("change", () => {
+  updateInstallmentPreview();
+  if (selectedPlan?.type === "installment") {
+    choosePlan(updateInstallmentPreview());
+  }
+});
+
+$("chooseInstallmentBtn").addEventListener("click", () => {
+  choosePlan(updateInstallmentPreview());
+});
+
+$("shareBtn").addEventListener("click", shareSelection);
+$("printBtn").addEventListener("click", () => window.print());
+$("clearBtn").addEventListener("click", resetAll);
+</script>
+</body>
 </html>
